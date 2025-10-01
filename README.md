@@ -1,19 +1,26 @@
-# Kairo-template
-This repository is a template based on the specifications of the Kairo addon linked below.  
-https://github.com/shizuku86/Kairo
+# Werewolf-StandardRoles
+Werewolf-StandardRoles is an addon that provides and handles the fundamental roles of the Werewolf game.
+With this addon, you can start the game with a minimal ruleset while keeping compatibility with other expansion addons.
 
-After cloning, run the following command to install node_modules:  
-- npm install
+### Included roles:
+ - Villager
+ - Seer
+ - Medium
+ - Hunter
+ - Werewolf
+ - Big Wolf
+ - Madman
 
-After editing the lines ending with # in scripts/properties.ts appropriately and resolving errors,  
-execute the following command in the terminal:  
-- npm run build
-
-When this command is executed, the following operations will be performed:  
-- manifest.json is automatically generated in BP/ and RP/ from the information in properties  
-- TypeScript files in scripts/ are built as JavaScript into BP/scripts  
-- The pack_icon.png at the project root is copied into both BP/ and RP/  
-- The completed BP/ and RP/ are copied into Minecraft’s development folder
+Werewolf-StandardRoles は、人狼ゲームにおける基本的な役職を提供・処理するアドオンです。
+このアドオンを導入することで、最小限のルールセットでゲームを開始でき、他の拡張アドオンとも組み合わせやすくなります。
+### 含まれる役職
+ - 村人
+ - 占い師
+ - 霊媒師
+ - 狩人
+ - 人狼
+ - 大狼
+ - 狂人
 
 ## Requirements
 - Node.js (for development and TypeScript build)
