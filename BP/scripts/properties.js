@@ -55,7 +55,7 @@ export const properties = {
         "werewolf-gamemanager": "1.0.0-dev.1", // "kairo": "1.0.0"
     },
     tags: [
-    // "stable",
+        // "stable",
     ],
 };
 /**
@@ -65,9 +65,4 @@ export const properties = {
  * For approved addons, assign "approved".
  *
  */
-export const supportedTags = [
-    "official",
-    "approved",
-    "stable",
-    "experimental",
-];
+export const supportedTags = ["official", "approved", "stable", "experimental"];

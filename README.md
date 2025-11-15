@@ -33,14 +33,14 @@ Werewolf-StandardRoles は、人狼ゲームにおける基本的な役職を提
 ## Setup && Build
 
 1. Install dependencies:
-   ```bash
-   npm install
-   ```
+    ```bash
+    npm install
+    ```
 2. Deploy
-   ```bash
-   npm run build
-   ```
+    ```bash
+    npm run build
+    ```
 3. Auto-deploy on file change:
-   ```bash
-   npm run dev
-   ```
+    ```bash
+    npm run dev
+    ```

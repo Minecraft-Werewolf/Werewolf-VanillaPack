@@ -1,5 +1,5 @@
 import { system } from "@minecraft/server";
-import { AddonPropertyManager, } from "./addons/AddonPropertyManager";
+import { AddonPropertyManager } from "./addons/AddonPropertyManager";
 import { AddonInitializer } from "./addons/router/init/AddonInitializer";
 import { AddonManager } from "./addons/AddonManager";
 import { SCRIPT_EVENT_IDS } from "./constants/scriptevent";
@@ -18,8 +18,7 @@ export class Kairo {
     }
     static init() {
         const inst = this.getInstance();
-        if (inst.initialized)
-            return;
+        if (inst.initialized) return;
         inst.initialized = true;
         inst.addonInitializer.subscribeClientHooks();
     }
@@ -43,22 +42,16 @@ export class Kairo {
         return this.addonManager.getDataVaultLastDataLoaded();
     }
     static set onActivate(val) {
-        if (typeof val === "function")
-            this._pushSorted(this._initHooks, val);
-        else
-            this._pushSorted(this._initHooks, val.run, val.options);
+        if (typeof val === "function") this._pushSorted(this._initHooks, val);
+        else this._pushSorted(this._initHooks, val.run, val.options);
     }
     static set onDeactivate(val) {
-        if (typeof val === "function")
-            this._pushSorted(this._deinitHooks, val);
-        else
-            this._pushSorted(this._deinitHooks, val.run, val.options);
+        if (typeof val === "function") this._pushSorted(this._deinitHooks, val);
+        else this._pushSorted(this._deinitHooks, val.run, val.options);
     }
     static set onScriptEvent(val) {
-        if (typeof val === "function")
-            this._pushSorted(this._seHooks, val);
-        else
-            this._pushSorted(this._seHooks, val.run, val.options);
+        if (typeof val === "function") this._pushSorted(this._seHooks, val);
+        else this._pushSorted(this._seHooks, val.run, val.options);
     }
     static addActivate(fn, opt) {
         this._pushSorted(this._initHooks, fn, opt);
@@ -86,9 +79,12 @@ export class Kairo {
         for (const { fn } of this._initHooks) {
             try {
                 await fn();
-            }
-            catch (e) {
-                system.run(() => console.warn(`[Kairo.onActivate] ${e instanceof Error ? (e.stack ?? e.message) : String(e)}`));
+            } catch (e) {
+                system.run(() =>
+                    console.warn(
+                        `[Kairo.onActivate] ${e instanceof Error ? (e.stack ?? e.message) : String(e)}`,
+                    ),
+                );
             }
         }
     }
@@ -96,9 +92,12 @@ export class Kairo {
         for (const { fn } of [...this._deinitHooks].reverse()) {
             try {
                 await fn();
-            }
-            catch (e) {
-                system.run(() => console.warn(`[Kairo.onDeactivate] ${e instanceof Error ? (e.stack ?? e.message) : String(e)}`));
+            } catch (e) {
+                system.run(() =>
+                    console.warn(
+                        `[Kairo.onDeactivate] ${e instanceof Error ? (e.stack ?? e.message) : String(e)}`,
+                    ),
+                );
             }
         }
     }
@@ -106,9 +105,12 @@ export class Kairo {
         for (const { fn } of this._seHooks) {
             try {
                 await fn(message);
-            }
-            catch (e) {
-                system.run(() => console.warn(`[Kairo.onScriptEvent] ${e instanceof Error ? (e.stack ?? e.message) : String(e)}`));
+            } catch (e) {
+                system.run(() =>
+                    console.warn(
+                        `[Kairo.onScriptEvent] ${e instanceof Error ? (e.stack ?? e.message) : String(e)}`,
+                    ),
+                );
             }
         }
     }
