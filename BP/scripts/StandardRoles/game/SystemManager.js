@@ -28,8 +28,8 @@ export class SystemManager {
         }
         return this.instance;
     }
-    handleScriptEvent(message) {
-        this.scriptEventReceiver.handleScriptEvent(message);
+    handleScriptEvent(data) {
+        this.scriptEventReceiver.handleScriptEvent(data);
     }
     subscribeEvents() {
         this.systemEventManager.subscribeAll();

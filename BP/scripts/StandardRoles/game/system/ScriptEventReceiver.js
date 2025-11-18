@@ -8,20 +8,7 @@ export class ScriptEventReceiver {
     static create(systemManager) {
         return new ScriptEventReceiver(systemManager);
     }
-    handleScriptEvent(message) {
-        let data;
-        try {
-            data = JSON.parse(message);
-        }
-        catch {
-            ConsoleManager.warn(`[ScriptEventReceiver] Invalid JSON: ${message}`);
-            return;
-        }
-        if (!data || typeof data.commandId !== "string") {
-            ConsoleManager.warn(`[ScriptEventReceiver] Missing command: ${message}`);
-            return;
-        }
-        console.log(data.commandId);
+    handleScriptEvent(data) {
         switch (data.commandId) {
             case SCRIPT_EVENT_COMMAND_IDS.WORLD_STATE_CHANGE:
                 this.handleWorldStateChange(data.worldState);
