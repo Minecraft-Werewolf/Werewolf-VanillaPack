@@ -1,6 +1,7 @@
 import { InGameManager } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
 import { SystemEventManager } from "./system/events/SystemEventManager";
+import { FactionManager } from "./system/factions/FactionManager";
 import { RoleManager } from "./system/roles/RoleManager";
 import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
 import { WorldStateChanger } from "./system/WorldStateChanger";
@@ -17,10 +18,14 @@ export class SystemManager {
         this.scriptEventReceiver = ScriptEventReceiver.create(this);
         this.systemEventManager = SystemEventManager.create(this);
         this.worldStateChanger = WorldStateChanger.create(this);
+        this.factionManager = FactionManager.create(this);
         this.roleManager = RoleManager.create(this);
     }
     init() {
-        this.changeWorldState(GameWorldState.OutGame);
+        this.requestFactionRegistration();
+        this.requestRoleRegistration();
+        // WorldState について GameManager に尋ねることと、
+        // requestがちゃんと通ったかを GameManager から返してもらいたい。
     }
     static getInstance() {
         if (this.instance === null) {
@@ -64,8 +69,11 @@ export class SystemManager {
     createOutGameManager() {
         return OutGameManager.create(this);
     }
-    getRoleManager() {
-        return this.roleManager;
+    requestFactionRegistration() {
+        this.factionManager.requestFactionRegistration();
+    }
+    requestRoleRegistration() {
+        this.roleManager.requestRoleRegistration();
     }
 }
 SystemManager.instance = null;

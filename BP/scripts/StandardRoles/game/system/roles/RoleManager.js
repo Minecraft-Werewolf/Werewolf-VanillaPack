@@ -1,13 +1,13 @@
-import { RoleRegistrationSender } from "./RoleRegistrationSender";
+import { RoleRegistrationRequester } from "./RoleRegistrationRequester";
 export class RoleManager {
     constructor(systemManager) {
         this.systemManager = systemManager;
-        this.roleRegistrationSender = RoleRegistrationSender.create(this);
+        this.roleRegistrationRequester = RoleRegistrationRequester.create(this);
     }
     static create(systemManager) {
         return new RoleManager(systemManager);
     }
-    sendRegistrationRoles() {
-        this.roleRegistrationSender.send();
+    requestRoleRegistration() {
+        this.roleRegistrationRequester.request();
     }
 }

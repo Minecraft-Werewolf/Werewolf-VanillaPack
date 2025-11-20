@@ -1,4 +1,3 @@
-import { ConsoleManager } from "../../../Kairo/utils/ConsoleManager";
 import { SCRIPT_EVENT_COMMAND_IDS, SCRIPT_EVENT_MESSAGES } from "../../constants/scriptevent";
 import { GameWorldState } from "../SystemManager";
 export class ScriptEventReceiver {
@@ -13,8 +12,11 @@ export class ScriptEventReceiver {
             case SCRIPT_EVENT_COMMAND_IDS.WORLD_STATE_CHANGE:
                 this.handleWorldStateChange(data.worldState);
                 break;
-            case SCRIPT_EVENT_COMMAND_IDS.ROLE_REGISTRATION_REQUEST:
-                this.systemManager.getRoleManager().sendRegistrationRoles();
+            case SCRIPT_EVENT_COMMAND_IDS.FACTION_RE_REGISTRATION_REQUEST:
+                this.systemManager.requestFactionRegistration();
+                break;
+            case SCRIPT_EVENT_COMMAND_IDS.ROLE_RE_REGISTRATION_REQUEST:
+                this.systemManager.requestRoleRegistration();
             default:
                 break;
         }
