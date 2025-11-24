@@ -1,11 +1,11 @@
 werewolf-standardroles.name=Werewolf-StandardRoles
 werewolf-standardroles.description=provides and handles the fundamental roles of the Werewolf game.
 
-werewolf-standardroles.faction.name.villager=
-werewolf-standardroles.faction.description.villager=
+werewolf-standardroles.faction.name.villager=Villager Faction
+werewolf-standardroles.faction.description.villager=A group of ordinary people gathered in the manor. Despite living in fear of the werewolves hiding among them, they rely on their wits and courage to uncover the truth. Peace will return once all werewolves are eliminated.
 
-werewolf-standardroles.faction.name.werewolf=
-werewolf-standardroles.faction.description.werewolf=
+werewolf-standardroles.faction.name.werewolf=Werewolf Faction
+werewolf-standardroles.faction.description.werewolf=Predators lurking in the shadows, disguised in human form. They secretly select their prey, sowing fear and confusion throughout the village. When they deceive the villagers and gain the majority, the village becomes theirs entirely.
 
 werewolf-standardroles.role.name.villager=Villager
 werewolf-standardroles.role.description.villager=An ordinary person with no special abilities. Yet precisely because they lack any powers, they can speak their thoughts openly without fearing being targeted by the werewolves.
