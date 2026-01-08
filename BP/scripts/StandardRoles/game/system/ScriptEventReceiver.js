@@ -10,7 +10,7 @@ export class ScriptEventReceiver {
     handleScriptEvent(data) {
         switch (data.commandId) {
             case SCRIPT_EVENT_COMMAND_IDS.WORLD_STATE_CHANGE:
-                this.handleWorldStateChange(data.worldState);
+                this.handleWorldStateChange(data.newState);
                 break;
             case SCRIPT_EVENT_COMMAND_IDS.FACTION_RE_REGISTRATION_REQUEST:
                 this.systemManager.requestFactionRegistration();
@@ -21,9 +21,8 @@ export class ScriptEventReceiver {
                 break;
         }
     }
-    handleWorldStateChange(args) {
-        const state = args[0];
-        switch (state) {
+    handleWorldStateChange(newState) {
+        switch (newState) {
             case SCRIPT_EVENT_MESSAGES.IN_GAME:
                 this.systemManager.changeWorldState(GameWorldState.InGame);
                 break;

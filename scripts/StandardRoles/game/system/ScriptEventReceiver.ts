@@ -11,7 +11,7 @@ export class ScriptEventReceiver {
     public handleScriptEvent(data: KairoCommand): void {
         switch (data.commandId) {
             case SCRIPT_EVENT_COMMAND_IDS.WORLD_STATE_CHANGE:
-                this.handleWorldStateChange(data.worldState);
+                this.handleWorldStateChange(data.newState);
                 break;
             case SCRIPT_EVENT_COMMAND_IDS.FACTION_RE_REGISTRATION_REQUEST:
                 this.systemManager.requestFactionRegistration();
@@ -23,9 +23,8 @@ export class ScriptEventReceiver {
         }
     }
 
-    private handleWorldStateChange(args: string[]): void {
-        const state = args[0];
-        switch (state) {
+    private handleWorldStateChange(newState: string): void {
+        switch (newState) {
             case SCRIPT_EVENT_MESSAGES.IN_GAME:
                 this.systemManager.changeWorldState(GameWorldState.InGame);
                 break;
