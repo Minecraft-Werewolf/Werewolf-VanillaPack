@@ -8,7 +8,35 @@ export const factions = [
         },
         defaultColor: "§a",
         victoryCondition: {
-            description: {},
+            priority: 9000,
+            condition: {
+                type: "and",
+                conditions: [
+                    {
+                        type: "factionAliveCount",
+                        factionId: "werewolf",
+                        operator: "==",
+                        value: 0,
+                    },
+                    {
+                        type: "factionAliveCount",
+                        factionId: "villager",
+                        operator: ">",
+                        value: 0,
+                    },
+                ],
+            },
+            description: {
+                translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.FACTION_VICTORYCONDITION_VILLAGER,
+            },
+            presentation: {
+                title: {
+                    translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_VILLAGER_FACTION_VICTORY_TITLE,
+                },
+                message: {
+                    translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_VILLAGER_FACTION_VICTORY_MESSAGE,
+                },
+            },
         },
         sortIndex: 100,
     },
@@ -20,7 +48,35 @@ export const factions = [
         },
         defaultColor: "§4",
         victoryCondition: {
-            description: {},
+            priority: 8000,
+            condition: {
+                type: "and",
+                conditions: [
+                    {
+                        type: "factionAliveCount",
+                        factionId: "villager",
+                        operator: "==",
+                        value: 0,
+                    },
+                    {
+                        type: "factionAliveCount",
+                        factionId: "werewolf",
+                        operator: ">",
+                        value: 0,
+                    },
+                ],
+            },
+            description: {
+                translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.FACTION_VICTORYCONDITION_WEREWOLF,
+            },
+            presentation: {
+                title: {
+                    translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_WEREWOLF_FACTION_VICTORY_TITLE,
+                },
+                message: {
+                    translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_WEREWOLF_FACTION_VICTORY_MESSAGE,
+                },
+            },
         },
         sortIndex: 200,
     },

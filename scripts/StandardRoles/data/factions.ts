@@ -1,17 +1,6 @@
 import type { RawMessage } from "@minecraft/server";
 import { WEREWOLF_STANDARDROLES_TRANSLATE_IDS } from "../constants/translate";
 
-export interface FactionDefinition {
-    id: string;
-    name: RawMessage;
-    description: RawMessage;
-    defaultColor: string;
-    victoryCondition: {
-        description: RawMessage;
-    }; // あとで勝利条件をカスタム定義できるようにする
-    sortIndex: number;
-}
-
 export const factions: FactionDefinition[] = [
     {
         id: "villager",
@@ -21,7 +10,37 @@ export const factions: FactionDefinition[] = [
         },
         defaultColor: "§a",
         victoryCondition: {
-            description: {},
+            priority: 9000,
+            condition: {
+                type: "and",
+                conditions: [
+                    {
+                        type: "factionAliveCount",
+                        factionId: "werewolf",
+                        operator: "==",
+                        value: 0,
+                    },
+                    {
+                        type: "factionAliveCount",
+                        factionId: "villager",
+                        operator: ">",
+                        value: 0,
+                    },
+                ],
+            },
+            description: {
+                translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.FACTION_VICTORYCONDITION_VILLAGER,
+            },
+            presentation: {
+                title: {
+                    translate:
+                        WEREWOLF_STANDARDROLES_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_VILLAGER_FACTION_VICTORY_TITLE,
+                },
+                message: {
+                    translate:
+                        WEREWOLF_STANDARDROLES_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_VILLAGER_FACTION_VICTORY_MESSAGE,
+                },
+            },
         },
         sortIndex: 100,
     },
@@ -33,8 +52,127 @@ export const factions: FactionDefinition[] = [
         },
         defaultColor: "§4",
         victoryCondition: {
-            description: {},
+            priority: 8000,
+            condition: {
+                type: "and",
+                conditions: [
+                    {
+                        type: "factionAliveCount",
+                        factionId: "villager",
+                        operator: "==",
+                        value: 0,
+                    },
+                    {
+                        type: "factionAliveCount",
+                        factionId: "werewolf",
+                        operator: ">",
+                        value: 0,
+                    },
+                ],
+            },
+            description: {
+                translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.FACTION_VICTORYCONDITION_WEREWOLF,
+            },
+            presentation: {
+                title: {
+                    translate:
+                        WEREWOLF_STANDARDROLES_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_WEREWOLF_FACTION_VICTORY_TITLE,
+                },
+                message: {
+                    translate:
+                        WEREWOLF_STANDARDROLES_TRANSLATE_IDS.WEREWOLF_GAME_RESULT_WEREWOLF_FACTION_VICTORY_MESSAGE,
+                },
+            },
         },
         sortIndex: 200,
     },
 ];
+
+export interface FactionDefinition {
+    id: string;
+    name: RawMessage;
+    description: RawMessage;
+    defaultColor: string;
+    victoryCondition: VictoryCondition;
+    sortIndex: number;
+}
+
+interface VictoryCondition {
+    priority: number;
+    condition: Condition;
+    description: RawMessage;
+    presentation: {
+        title: RawMessage;
+        message: RawMessage;
+    };
+}
+
+interface GameOutcomeRule {
+    id: string;
+    priority: number;
+    condition: Condition;
+    outcome: GameOutcome;
+    presentation: {
+        title: RawMessage;
+        message: RawMessage;
+    };
+}
+
+type GameVariableKey = "remainingTime" | "alivePlayerCount";
+
+type NumericValue = number | GameVariableKey | { factionAliveCount: string };
+
+type Condition =
+    | ComparisonCondition
+    | FactionAliveCountComparison
+    | PlayerAliveCountComparison
+    | RemainingTimeComparison
+    | AndCondition
+    | OrCondition
+    | NotCondition;
+
+interface ComparisonCondition {
+    type: "comparison";
+    operator: "==" | "!=" | "<" | "<=" | ">" | ">=";
+    left: NumericValue;
+    right: NumericValue;
+}
+
+interface FactionAliveCountComparison {
+    type: "factionAliveCount";
+    factionId: string;
+    operator: "==" | "!=" | "<" | "<=" | ">" | ">=";
+    value: NumericValue;
+}
+
+interface PlayerAliveCountComparison {
+    type: "playerAliveCount";
+    operator: "==" | "!=" | "<" | "<=" | ">" | ">=";
+    value: NumericValue;
+}
+
+interface RemainingTimeComparison {
+    type: "remainingTime";
+    operator: "==" | "!=" | "<" | "<=" | ">" | ">=";
+    value: NumericValue;
+}
+
+interface AndCondition {
+    type: "and";
+    conditions: Condition[];
+}
+
+interface OrCondition {
+    type: "or";
+    conditions: Condition[];
+}
+
+interface NotCondition {
+    type: "not";
+    condition: Condition;
+}
+
+type GameOutcome =
+    | { type: "victory"; factionId: string }
+    | { type: "draw"; reason: string }
+    | { type: "end"; reason: string };
