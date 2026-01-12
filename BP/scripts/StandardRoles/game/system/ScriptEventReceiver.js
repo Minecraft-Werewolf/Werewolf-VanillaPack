@@ -7,18 +7,21 @@ export class ScriptEventReceiver {
     static create(systemManager) {
         return new ScriptEventReceiver(systemManager);
     }
-    handleScriptEvent(data) {
-        switch (data.commandId) {
+    async handleScriptEvent(command) {
+        switch (command.commandType) {
             case SCRIPT_EVENT_COMMAND_IDS.WORLD_STATE_CHANGE:
-                this.handleWorldStateChange(data.newState);
-                break;
+                this.handleWorldStateChange(command.data.newState);
+                return;
             case SCRIPT_EVENT_COMMAND_IDS.FACTION_RE_REGISTRATION_REQUEST:
                 this.systemManager.requestFactionRegistration();
-                break;
+                return;
             case SCRIPT_EVENT_COMMAND_IDS.ROLE_RE_REGISTRATION_REQUEST:
                 this.systemManager.requestRoleRegistration();
+            case SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_INGAME_PLAYER_SKILL_TRIGGER:
+                this.systemManager.handlePlayerSkillTrigger(command.data.playerId, command.data.eventType);
+                return;
             default:
-                break;
+                return;
         }
     }
     handleWorldStateChange(newState) {

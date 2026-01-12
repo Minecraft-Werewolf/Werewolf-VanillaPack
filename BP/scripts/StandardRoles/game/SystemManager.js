@@ -75,5 +75,8 @@ export class SystemManager {
     requestRoleRegistration() {
         this.roleManager.requestRoleRegistration();
     }
+    handlePlayerSkillTrigger(playerId, eventType) {
+        this.inGameManager?.handlePlayerSkillTrigger(playerId, eventType);
+    }
 }
 SystemManager.instance = null;

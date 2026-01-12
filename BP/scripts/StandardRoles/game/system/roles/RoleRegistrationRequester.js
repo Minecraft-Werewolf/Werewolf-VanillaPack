@@ -1,5 +1,4 @@
 import { KairoUtils } from "../../../../Kairo/utils/KairoUtils";
-import { properties } from "../../../../properties";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../../constants/scriptevent";
 import { KAIRO_COMMAND_TARGET_ADDON_IDS } from "../../../constants/systems";
 import { roles } from "../../../data/roles";
@@ -12,11 +11,8 @@ export class RoleRegistrationRequester {
         return new RoleRegistrationRequester(roleManager);
     }
     request() {
-        const data = {
-            commandId: SCRIPT_EVENT_COMMAND_IDS.ROLE_REGISTRATION_REQUEST,
-            addonId: properties.id,
+        KairoUtils.sendKairoCommand(KAIRO_COMMAND_TARGET_ADDON_IDS.WEREWOLF_GAMEMANAGER, SCRIPT_EVENT_COMMAND_IDS.ROLE_REGISTRATION_REQUEST, {
             roles: roles,
-        };
-        KairoUtils.sendKairoCommand(KAIRO_COMMAND_TARGET_ADDON_IDS.WEREWOLF_GAMEMANAGER, data);
+        });
     }
 }
