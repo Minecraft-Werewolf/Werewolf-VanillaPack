@@ -1,4 +1,5 @@
 import type { KairoCommand } from "../../Kairo/utils/KairoUtils";
+import type { GameEventType } from "../data/roles";
 import { InGameManager } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
 import { SystemEventManager } from "./system/events/SystemEventManager";
@@ -96,5 +97,9 @@ export class SystemManager {
 
     public requestRoleRegistration(): void {
         this.roleManager.requestRoleRegistration();
+    }
+
+    public handlePlayerSkillTrigger(playerId: string, eventType: GameEventType): void {
+        this.inGameManager?.handlePlayerSkillTrigger(playerId, eventType);
     }
 }

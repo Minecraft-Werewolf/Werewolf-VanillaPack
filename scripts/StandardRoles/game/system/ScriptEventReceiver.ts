@@ -1,4 +1,4 @@
-import type { KairoCommand } from "../../../Kairo/utils/KairoUtils";
+import type { KairoCommand, KairoResponse } from "../../../Kairo/utils/KairoUtils";
 import { SCRIPT_EVENT_COMMAND_IDS, SCRIPT_EVENT_MESSAGES } from "../../constants/scriptevent";
 import { GameWorldState, type SystemManager } from "../SystemManager";
 
@@ -8,18 +8,24 @@ export class ScriptEventReceiver {
         return new ScriptEventReceiver(systemManager);
     }
 
-    public handleScriptEvent(data: KairoCommand): void {
-        switch (data.commandId) {
+    public async handleScriptEvent(command: KairoCommand): Promise<void | KairoResponse> {
+        switch (command.commandType) {
             case SCRIPT_EVENT_COMMAND_IDS.WORLD_STATE_CHANGE:
-                this.handleWorldStateChange(data.newState);
-                break;
+                this.handleWorldStateChange(command.data.newState);
+                return;
             case SCRIPT_EVENT_COMMAND_IDS.FACTION_RE_REGISTRATION_REQUEST:
                 this.systemManager.requestFactionRegistration();
-                break;
+                return;
             case SCRIPT_EVENT_COMMAND_IDS.ROLE_RE_REGISTRATION_REQUEST:
                 this.systemManager.requestRoleRegistration();
+            case SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_INGAME_PLAYER_SKILL_TRIGGER:
+                this.systemManager.handlePlayerSkillTrigger(
+                    command.data.playerId,
+                    command.data.eventType,
+                );
+                return;
             default:
-                break;
+                return;
         }
     }
 
