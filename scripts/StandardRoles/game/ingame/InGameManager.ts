@@ -1,4 +1,7 @@
-import type { GameEventType } from "../../data/roles";
+import { KairoUtils } from "../../../Kairo/utils/KairoUtils";
+import { SCRIPT_EVENT_COMMAND_IDS } from "../../constants/scriptevent";
+import { KAIRO_COMMAND_TARGET_ADDON_IDS } from "../../constants/systems";
+import { roles, type GameEventType, type RoleDefinition } from "../../data/roles";
 import type { SystemManager } from "../SystemManager";
 import { InGameEventManager } from "./events/InGameEventManager";
 import { SkillManager } from "./SkillManager";
@@ -9,6 +12,14 @@ export enum GamePhase {
     InGame,
     Result,
     Waiting,
+}
+
+export interface PlayerDataDTO {
+    playerId: string;
+    name: string;
+    isAlive: boolean;
+    isVictory: boolean;
+    role: RoleDefinition | null;
 }
 
 export class InGameManager {
@@ -29,6 +40,21 @@ export class InGameManager {
     }
 
     public handlePlayerSkillTrigger(playerId: string, eventType: GameEventType): void {
-        this.skillManager.handlePlayerSkillTrigger(playerId, eventType);
+        this.skillManager.emitPlayerEvent(playerId, eventType);
+    }
+
+    public async getPlayerData(playerId: string): Promise<PlayerDataDTO> {
+        const kairoResponse = await KairoUtils.sendKairoCommandAndWaitResponse(
+            KAIRO_COMMAND_TARGET_ADDON_IDS.WEREWOLF_GAMEMANAGER,
+            SCRIPT_EVENT_COMMAND_IDS.GET_PLAYER_WEREWOLF_DATA,
+            {
+                playerId,
+            },
+        );
+        return kairoResponse.data.playerData as PlayerDataDTO;
+    }
+
+    public getRoleDefinition(roleId: string): RoleDefinition | undefined {
+        return roles.find((role) => role.id === roleId);
     }
 }

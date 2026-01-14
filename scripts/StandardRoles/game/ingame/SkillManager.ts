@@ -1,37 +1,80 @@
-import { KairoUtils } from "../../../Kairo/utils/KairoUtils";
-import { SCRIPT_EVENT_COMMAND_IDS } from "../../constants/scriptevent";
-import { KAIRO_COMMAND_TARGET_ADDON_IDS } from "../../constants/systems";
-import type { GameEventType, RoleDefinition } from "../../data/roles";
+import type { GameEventType } from "../../data/roles";
 import type { InGameManager } from "./InGameManager";
-
-interface PlayerDataDTO {
-    playerId: string;
-    name: string;
-    isAlive: boolean;
-    isVictory: boolean;
-    role: RoleDefinition | null;
-}
+import { SkillFunctionRegistry } from "./SkillFunctionRegistry";
 
 export class SkillManager {
-    private constructor(private readonly inGameManager: InGameManager) {}
-
+    private readonly skillFunctionRegistry: SkillFunctionRegistry;
+    private constructor(private readonly inGameManager: InGameManager) {
+        this.skillFunctionRegistry = SkillFunctionRegistry.create(this);
+    }
     public static create(inGameManager: InGameManager): SkillManager {
         return new SkillManager(inGameManager);
     }
 
-    public async handlePlayerSkillTrigger(
+    public async emitPlayerEvent(
         playerId: string,
         eventType: GameEventType,
+        ctxPayload?: unknown,
     ): Promise<void> {
-        const kairoResponse = await KairoUtils.sendKairoCommandAndWaitResponse(
-            KAIRO_COMMAND_TARGET_ADDON_IDS.WEREWOLF_GAMEMANAGER,
-            SCRIPT_EVENT_COMMAND_IDS.GET_PLAYER_WEREWOLF_DATA,
-            {
-                playerId,
-            },
-        );
-        const playerData = kairoResponse.data.playerData as PlayerDataDTO;
+        const playerData = await this.inGameManager.getPlayerData(playerId);
+        if (!playerData) return;
+        if (!playerData.role) return;
 
-        console.log(JSON.stringify(playerData.role?.name));
+        const roleDefinition = this.inGameManager.getRoleDefinition(playerData.role.id);
+        if (!roleDefinition) return;
+
+        const script = roleDefinition.handleGameEvents?.[eventType];
+        if (!script) return;
+
+        const ctx = new SkillContext(this.inGameManager, playerId, eventType, ctxPayload);
+
+        await this.executeScript(script, ctx);
+    }
+
+    // ------------------------
+
+    private async executeScript(script: SkillScript, ctx: SkillContext): Promise<void> {
+        if (script.actions) {
+            for (const action of script.actions) {
+                await this.executeAction(action, ctx);
+            }
+        }
+
+        if (script.invoke) {
+            const invokes = Array.isArray(script.invoke) ? script.invoke : [script.invoke];
+
+            for (const ref of invokes) {
+                const fn = this.functionRegistry.get(ref.id);
+                if (!fn) {
+                    throw new Error(`SkillFunction not registered: ${ref.id}`);
+                }
+                await fn(ctx, ref.args);
+            }
+        }
+    }
+
+    // ------------------------
+
+    private async executeAction(action: SkillAction, ctx: SkillContext): Promise<void> {
+        switch (action.type) {
+            case "selectTarget":
+                ctx.selectTarget(action.from);
+                break;
+
+            case "sendMessage":
+                ctx.sendMessage(action.to, action.message);
+                break;
+
+            case "kill":
+                ctx.kill(action.target);
+                break;
+
+            case "protect":
+                ctx.protect(action.target, action.duration);
+                break;
+
+            default:
+                throw new Error(`Unknown SkillAction: ${(action as any).type}`);
+        }
     }
 }

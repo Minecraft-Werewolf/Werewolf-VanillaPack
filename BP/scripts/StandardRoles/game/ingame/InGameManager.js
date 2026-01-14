@@ -1,3 +1,7 @@
+import { KairoUtils } from "../../../Kairo/utils/KairoUtils";
+import { SCRIPT_EVENT_COMMAND_IDS } from "../../constants/scriptevent";
+import { KAIRO_COMMAND_TARGET_ADDON_IDS } from "../../constants/systems";
+import { roles } from "../../data/roles";
 import { InGameEventManager } from "./events/InGameEventManager";
 import { SkillManager } from "./SkillManager";
 export var GamePhase;
@@ -21,6 +25,15 @@ export class InGameManager {
         return this.inGameEventManager;
     }
     handlePlayerSkillTrigger(playerId, eventType) {
-        this.skillManager.handlePlayerSkillTrigger(playerId, eventType);
+        this.skillManager.emitPlayerEvent(playerId, eventType);
+    }
+    async getPlayerData(playerId) {
+        const kairoResponse = await KairoUtils.sendKairoCommandAndWaitResponse(KAIRO_COMMAND_TARGET_ADDON_IDS.WEREWOLF_GAMEMANAGER, SCRIPT_EVENT_COMMAND_IDS.GET_PLAYER_WEREWOLF_DATA, {
+            playerId,
+        });
+        return kairoResponse.data.playerData;
+    }
+    getRoleDefinition(roleId) {
+        return roles.find((role) => role.id === roleId);
     }
 }

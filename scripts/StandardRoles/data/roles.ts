@@ -18,6 +18,10 @@ interface RoleKey {
 
 type RoleRef = RoleKey;
 
+export interface SkillScript {
+    actions: SkillAction[];
+}
+
 export interface RoleDefinition {
     id: string;
     name: RawMessage;
@@ -32,7 +36,9 @@ export interface RoleDefinition {
     divinationResult?: string; // 占い結果
     mediumResult?: string; // 霊視結果
     knownRoles?: string[]; // 初期に知っている役職
-    handleGmaeEvents?: GameEventType[]; // 処理するゲームイベント
+    handleGameEvents?: {
+        [eventType: string]: SkillScript;
+    }; // 処理するゲームイベント
     appearance?: {
         toSelf?: RoleRef; // 自分目線の表示 (呪われし者とか)
         toOthers?: RoleRef; // 他人目線の表示 (テレパシストとか)
