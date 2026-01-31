@@ -2,12 +2,11 @@ import { world } from "@minecraft/server";
 import type { GameEventHandlerMap } from "../../game/ingame/game/SkillManager";
 import { ModalFormData } from "@minecraft/server-ui";
 import { WEREWOLF_STANDARDROLES_TRANSLATE_IDS } from "../../constants/translate";
-import { findFactionDefinition, findRoleDefinition, getRoleDefaultColor } from "./utils";
 import { SYSTEMS } from "../../constants/systems";
 
-export const seerSkillHandlers: GameEventHandlerMap = {
-    "seer-divination": async (ev) => {
-        const { playerData: pd, werewolfGameData: we, ingameConstants: c } = ev;
+export const knightSkillHandlers: GameEventHandlerMap = {
+    "knight-protect": async (ev) => {
+        const { playerData: pd, playersData: psd, werewolfGameData: we } = ev;
         const player = world.getPlayers().find((p) => p.id === pd.playerId);
         if (!player) return false;
         const targetPlayersData = we.playersData.filter(
@@ -21,20 +20,22 @@ export const seerSkillHandlers: GameEventHandlerMap = {
             });
             player.sendMessage({
                 translate:
-                    WEREWOLF_STANDARDROLES_TRANSLATE_IDS.SEER_SKILL_NO_AVAILABLE_TARGETS_ERROR,
+                    WEREWOLF_STANDARDROLES_TRANSLATE_IDS.KNIGHT_SKILL_NO_AVAILABLE_TARGETS_ERROR,
             });
             return false;
         }
 
         const form = new ModalFormData()
             .title({
-                translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.SEER_SKILL_FORM_TITLE,
+                translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.KNIGHT_SKILL_FORM_TITLE,
             })
-            .label({ translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.SEER_SKILL_FORM_DESCRIPTION })
+            .label({
+                translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.KNIGHT_SKILL_FORM_DESCRIPTION,
+            })
             .dropdown(
                 {
                     translate:
-                        WEREWOLF_STANDARDROLES_TRANSLATE_IDS.SEER_SKILL_FORM_TARGET_DROPDOWN_LABEL,
+                        WEREWOLF_STANDARDROLES_TRANSLATE_IDS.KNIGHT_SKILL_FORM_TARGET_DROPDOWN_LABEL,
                 },
                 targetPlayersData.map((p) => p.player.name),
                 { defaultValueIndex: 0 },
@@ -46,38 +47,19 @@ export const seerSkillHandlers: GameEventHandlerMap = {
         const targetPlayerData = targetPlayersData[res.formValues[1] as number];
         if (!targetPlayerData || !targetPlayerData.role) return false;
 
-        const targetPlayerFaction = findFactionDefinition(
-            c.factionDefinitions,
-            targetPlayerData.role.factionId,
-        );
-        if (!targetPlayerFaction) return false;
+        const targetSelfPlayerData = psd.find((p) => p.playerId === targetPlayerData.player.id);
+        if (!targetSelfPlayerData) return false;
 
-        const divinationResultRoleId =
-            targetPlayerData.role.divinationResult ?? targetPlayerFaction.defaultRoleId;
-
-        const divinationResultRoleDefinition = findRoleDefinition(
-            c.roleDefinitions,
-            divinationResultRoleId,
-        );
-        if (!divinationResultRoleDefinition) return false;
-
+        targetSelfPlayerData.isProtected = true;
         player.playSound(SYSTEMS.SUCCESS.SOUND_ID, {
             pitch: SYSTEMS.SUCCESS.SOUND_PITCH,
             volume: SYSTEMS.SUCCESS.SOUND_VOLUME,
             location: player.location,
         });
         player.sendMessage({
-            translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.SEER_SKILL_DIVINATION_RESULT,
+            translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.KNIGHT_SKILL_PROTECT_RESULT,
             with: {
-                rawtext: [
-                    { text: targetPlayerData.player.name },
-                    {
-                        text:
-                            divinationResultRoleDefinition.color ??
-                            getRoleDefaultColor(c, divinationResultRoleDefinition),
-                    },
-                    divinationResultRoleDefinition.name,
-                ],
+                rawtext: [{ text: targetPlayerData.player.name }],
             },
         });
 

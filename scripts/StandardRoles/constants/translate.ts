@@ -52,4 +52,12 @@ export const WEREWOLF_STANDARDROLES_TRANSLATE_IDS = {
     MEDIUM_SKILL_CLAIRVOYANCE_RESULT: "werewolf-standardroles.skill.medium.clairvoyance.result",
     MEDIUM_SKILL_NO_AVAILABLE_TARGETS_ERROR:
         "werewolf-standardroles.skill.medium.noAvailableTargets.error",
+
+    KNIGHT_SKILL_FORM_TITLE: "werewolf-standardroles.skill.knight.form.title",
+    KNIGHT_SKILL_FORM_DESCRIPTION: "werewolf-standardroles.skill.knight.form.description",
+    KNIGHT_SKILL_FORM_TARGET_DROPDOWN_LABEL:
+        "werewolf-standardroles.skill.knight.form.target.dropdown.label",
+    KNIGHT_SKILL_PROTECT_RESULT: "werewolf-standardroles.skill.knight.protect.result",
+    KNIGHT_SKILL_NO_AVAILABLE_TARGETS_ERROR:
+        "werewolf-standardroles.skill.knight.noAvailableTargets.error",
 };

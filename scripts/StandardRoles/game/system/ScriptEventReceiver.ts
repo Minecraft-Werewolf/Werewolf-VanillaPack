@@ -23,6 +23,9 @@ export class ScriptEventReceiver {
             case SCRIPT_EVENT_COMMAND_IDS.ROLE_RE_REGISTRATION_REQUEST:
                 this.systemManager.requestRoleRegistration();
                 return;
+            case SCRIPT_EVENT_COMMAND_IDS.INGAME_PHASE_CHANGE:
+                this.systemManager.setCurrentPhase(command.data.newPhase);
+                return;
             case SCRIPT_EVENT_COMMAND_IDS.WEREWOLF_INGAME_PLAYER_SKILL_TRIGGER:
                 return this.systemManager.handlePlayerSkillTrigger(
                     command.data.playerId,

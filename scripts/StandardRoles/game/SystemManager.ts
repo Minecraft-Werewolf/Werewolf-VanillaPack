@@ -1,6 +1,6 @@
 import { KairoUtils, type KairoCommand, type KairoResponse } from "../../Kairo/utils/KairoUtils";
 import type { GameEventType } from "../data/roles";
-import { InGameManager, type IngameConstants } from "./ingame/InGameManager";
+import { GamePhase, InGameManager, type IngameConstants } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
 import { SystemEventManager } from "./system/events/SystemEventManager";
 import { FactionManager } from "./system/factions/FactionManager";
@@ -97,6 +97,11 @@ export class SystemManager {
 
     public requestRoleRegistration(): void {
         this.roleManager.requestRoleRegistration();
+    }
+
+    public setCurrentPhase(newPhase: GamePhase): void {
+        if (!this.inGameManager) return;
+        this.inGameManager.setCurrentPhase(newPhase);
     }
 
     public async handlePlayerSkillTrigger(

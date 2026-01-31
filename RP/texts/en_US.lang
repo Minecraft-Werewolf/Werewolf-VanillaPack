@@ -51,3 +51,9 @@ werewolf-standardroles.skill.medium.form.description=Select a dead player to see
 werewolf-standardroles.skill.medium.form.target.dropdown.label=Select Player Name
 werewolf-standardroles.skill.medium.clairvoyance.result=§b%1§r§f is the %2%3§r.
 werewolf-standardroles.skill.medium.noAvailableTargets.error=§cNo available targets to clairvoyance§r
+
+werewolf-standardroles.skill.knight.form.title=Protect
+werewolf-standardroles.skill.knight.form.description=Select a living player to grant them protection. Protection prevents one direct attack damage.
+werewolf-standardroles.skill.knight.form.target.dropdown.label=Select Player Name
+werewolf-standardroles.skill.knight.protect.result=§e%s has been protected§r
+werewolf-standardroles.skill.knight.noAvailableTargets.error=§cNo available targets to protect§r

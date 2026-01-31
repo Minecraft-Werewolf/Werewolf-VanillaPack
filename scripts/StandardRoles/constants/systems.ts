@@ -26,4 +26,10 @@ export const SYSTEMS = {
         SOUND_PITCH: 1,
         SOUND_VOLUME: 1,
     },
+
+    PROTECT: {
+        SOUND_ID: "random.totem",
+        SOUND_PITCH: 1,
+        SOUND_VOLUME: 1.25,
+    },
 };

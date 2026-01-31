@@ -1,16 +1,20 @@
 import { KairoUtils, type KairoResponse } from "../../../../Kairo/utils/KairoUtils";
+import type { SelfPlayerData } from "../../../data/player";
 import type { GameEventType, RoleDefinition } from "../../../data/roles";
 import { roleSkillHandlers } from "../../../data/skills/skillHandlers";
 import type { IngameConstants, InGameManager } from "../InGameManager";
 import type { WerewolfGameData } from "./WerewolfGameData";
 
-export type RoleSkillHandler = (
-    playerId: string,
-    werewolfGameData: WerewolfGameData,
-    ingameConstants: IngameConstants,
-) => Promise<boolean> | boolean;
+export type RoleSkillHandler = (ev: SkillEventContext) => Promise<boolean> | boolean;
 
 export type GameEventHandlerMap = Partial<Record<string, RoleSkillHandler>>;
+
+export type SkillEventContext = {
+    readonly playerData: SelfPlayerData;
+    readonly playersData: readonly SelfPlayerData[];
+    readonly werewolfGameData: WerewolfGameData;
+    readonly ingameConstants: IngameConstants;
+};
 
 export class SkillManager {
     private readonly handlersByRoleId = new Map<string, Map<string, RoleSkillHandler>>();
@@ -82,11 +86,19 @@ export class SkillManager {
             );
         }
 
-        const success = await handler(
-            playerId,
-            werewolfGameData,
-            this.inGameManager.getIngameConstants(),
-        );
+        const selfPlayerData = this.inGameManager.getSelfPlayerData(playerId);
+        if (!selfPlayerData) {
+            return KairoUtils.buildKairoResponse({}, false, "No self player data");
+        }
+
+        const ev: SkillEventContext = {
+            playerData: selfPlayerData,
+            playersData: this.inGameManager.getSelfPlayersData(),
+            werewolfGameData: werewolfGameData,
+            ingameConstants: this.inGameManager.getIngameConstants(),
+        };
+
+        const success = await handler(ev);
 
         return KairoUtils.buildKairoResponse({ success });
     }

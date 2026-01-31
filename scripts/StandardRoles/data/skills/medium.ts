@@ -6,11 +6,12 @@ import { findFactionDefinition, findRoleDefinition, getRoleDefaultColor } from "
 import { SYSTEMS } from "../../constants/systems";
 
 export const mediumSkillHandlers: GameEventHandlerMap = {
-    "medium-clairvoyance": async (playerId, ev, c) => {
-        const player = world.getPlayers().find((p) => p.id === playerId);
+    "medium-clairvoyance": async (ev) => {
+        const { playerData: pd, werewolfGameData: we, ingameConstants: c } = ev;
+        const player = world.getPlayers().find((p) => p.id === pd.playerId);
         if (!player) return false;
-        const targetPlayersData = ev.playersData.filter(
-            (p) => !p.isAlive && p.player.id !== playerId,
+        const targetPlayersData = we.playersData.filter(
+            (p) => !p.isAlive && p.player.id !== pd.playerId,
         );
         if (targetPlayersData.length === 0) {
             player.playSound(SYSTEMS.ERROR.SOUND_ID, {

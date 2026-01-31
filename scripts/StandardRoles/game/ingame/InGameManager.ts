@@ -7,6 +7,10 @@ import { InGameEventManager } from "./events/InGameEventManager";
 import type { WerewolfGameData } from "./game/WerewolfGameData";
 import { SkillManager } from "./game/SkillManager";
 import type { FactionDefinition } from "../../data/factions";
+import { playerData, type SelfPlayerData } from "../../data/player";
+import { world } from "@minecraft/server";
+import { GameManager } from "./game/GameManager";
+import { onSecondUpdate, onTickUpdate } from "../../data/update";
 
 export enum GamePhase {
     Initializing,
@@ -30,15 +34,22 @@ export type IngameConstants = {
 };
 
 export class InGameManager {
+    private currentPhase: GamePhase = GamePhase.Waiting;
+
     private readonly inGameEventManager: InGameEventManager;
+    private readonly gameManager: GameManager;
     private readonly skillManager: SkillManager;
+
+    private readonly playerDataByPlayerId = new Map<string, SelfPlayerData>();
 
     private constructor(
         private readonly systemManager: SystemManager,
         private readonly ingameConstants: IngameConstants,
     ) {
         this.inGameEventManager = InGameEventManager.create(this);
+        this.gameManager = GameManager.create(this, { onTickUpdate, onSecondUpdate });
         this.skillManager = SkillManager.create(this, roles);
+        this.initSelfPlayersData();
     }
 
     public static create(
@@ -76,5 +87,41 @@ export class InGameManager {
 
     public getIngameConstants(): IngameConstants {
         return this.ingameConstants;
+    }
+
+    public getCurrentPhase(): GamePhase {
+        return this.currentPhase;
+    }
+
+    public setCurrentPhase(newPhase: GamePhase): void {
+        this.currentPhase = newPhase;
+
+        switch (newPhase) {
+            case GamePhase.InGame:
+                this.gameManager.startGame();
+                break;
+            case GamePhase.Result:
+                this.gameManager.finishGame();
+                break;
+        }
+    }
+
+    public getSelfPlayerData(playerId: string): SelfPlayerData | undefined {
+        return this.playerDataByPlayerId.get(playerId);
+    }
+
+    public getSelfPlayersData(): readonly SelfPlayerData[] {
+        return Array.from(this.playerDataByPlayerId.values());
+    }
+
+    private initSelfPlayersData(): void {
+        const players = world.getPlayers();
+
+        for (const player of players) {
+            this.playerDataByPlayerId.set(player.id, {
+                ...playerData,
+                playerId: player.id,
+            });
+        }
     }
 }
