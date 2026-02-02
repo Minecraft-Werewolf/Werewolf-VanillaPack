@@ -17,11 +17,11 @@ import type { FactionDefinition } from "../../../../VanillaPack/factions/faction
 import { onSecondUpdate, onTickUpdate } from "../../../../VanillaPack/update";
 
 export enum GamePhase {
-    Initializing,
-    Preparing,
-    InGame,
-    Result,
-    Waiting,
+    Initializing = "Initializing",
+    Preparing = "Preparing",
+    InGame = "InGame",
+    Result = "Result",
+    Waiting = "Waiting",
 }
 
 export interface PlayerDataDTO {

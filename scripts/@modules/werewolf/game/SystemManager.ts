@@ -13,8 +13,8 @@ import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
 import { WorldStateChanger } from "./system/WorldStateChanger";
 
 export enum GameWorldState {
-    OutGame,
-    InGame,
+    OutGame = "OutGame",
+    InGame = "InGame",
 }
 
 export class SystemManager {
