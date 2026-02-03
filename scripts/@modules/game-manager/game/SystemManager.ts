@@ -3,7 +3,7 @@ import {
     type KairoCommand,
     type KairoResponse,
 } from "../../../@core/kairo/utils/KairoUtils";
-import type { GameEventType } from "../../../werewolf/roles/roles";
+import type { GameEventType } from "../constants/types";
 import type { GamePhase } from "./ingame/GamePhase";
 import { InGameManager, type IngameConstants } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
