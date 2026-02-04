@@ -1,8 +1,8 @@
 import { world } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import type { GameEventHandlerMap } from "../../../@modules/game-manager/game/ingame/game/SkillManager";
-import { WEREWOLF_STANDARDROLES_TRANSLATE_IDS } from "../../constants/translate";
 import { SYSTEMS } from "../../constants/systems";
+import { WEREWOLF_VANILLAPACK_TRANSLATE_IDS } from "../../constants/translate";
 
 export const knightSkillHandlers: GameEventHandlerMap = {
     "knight-protect": async (ev) => {
@@ -20,22 +20,22 @@ export const knightSkillHandlers: GameEventHandlerMap = {
             });
             player.sendMessage({
                 translate:
-                    WEREWOLF_STANDARDROLES_TRANSLATE_IDS.KNIGHT_SKILL_NO_AVAILABLE_TARGETS_ERROR,
+                    WEREWOLF_VANILLAPACK_TRANSLATE_IDS.KNIGHT_SKILL_NO_AVAILABLE_TARGETS_ERROR,
             });
             return false;
         }
 
         const form = new ModalFormData()
             .title({
-                translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.KNIGHT_SKILL_FORM_TITLE,
+                translate: WEREWOLF_VANILLAPACK_TRANSLATE_IDS.KNIGHT_SKILL_FORM_TITLE,
             })
             .label({
-                translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.KNIGHT_SKILL_FORM_DESCRIPTION,
+                translate: WEREWOLF_VANILLAPACK_TRANSLATE_IDS.KNIGHT_SKILL_FORM_DESCRIPTION,
             })
             .dropdown(
                 {
                     translate:
-                        WEREWOLF_STANDARDROLES_TRANSLATE_IDS.KNIGHT_SKILL_FORM_TARGET_DROPDOWN_LABEL,
+                        WEREWOLF_VANILLAPACK_TRANSLATE_IDS.KNIGHT_SKILL_FORM_TARGET_DROPDOWN_LABEL,
                 },
                 targetPlayersData.map((p) => p.player.name),
                 { defaultValueIndex: 0 },
@@ -57,7 +57,7 @@ export const knightSkillHandlers: GameEventHandlerMap = {
             location: player.location,
         });
         player.sendMessage({
-            translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.KNIGHT_SKILL_PROTECT_RESULT,
+            translate: WEREWOLF_VANILLAPACK_TRANSLATE_IDS.KNIGHT_SKILL_PROTECT_RESULT,
             with: {
                 rawtext: [{ text: targetPlayerData.player.name }],
             },

@@ -2,8 +2,8 @@ import { world } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import { findFactionDefinition, findRoleDefinition, getRoleDefaultColor } from "./utils";
 import type { GameEventHandlerMap } from "../../../@modules/game-manager/game/ingame/game/SkillManager";
-import { WEREWOLF_STANDARDROLES_TRANSLATE_IDS } from "../../constants/translate";
 import { SYSTEMS } from "../../constants/systems";
+import { WEREWOLF_VANILLAPACK_TRANSLATE_IDS } from "../../constants/translate";
 
 export const seerSkillHandlers: GameEventHandlerMap = {
     "seer-divination": async (ev) => {
@@ -20,21 +20,20 @@ export const seerSkillHandlers: GameEventHandlerMap = {
                 location: player.location,
             });
             player.sendMessage({
-                translate:
-                    WEREWOLF_STANDARDROLES_TRANSLATE_IDS.SEER_SKILL_NO_AVAILABLE_TARGETS_ERROR,
+                translate: WEREWOLF_VANILLAPACK_TRANSLATE_IDS.SEER_SKILL_NO_AVAILABLE_TARGETS_ERROR,
             });
             return false;
         }
 
         const form = new ModalFormData()
             .title({
-                translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.SEER_SKILL_FORM_TITLE,
+                translate: WEREWOLF_VANILLAPACK_TRANSLATE_IDS.SEER_SKILL_FORM_TITLE,
             })
-            .label({ translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.SEER_SKILL_FORM_DESCRIPTION })
+            .label({ translate: WEREWOLF_VANILLAPACK_TRANSLATE_IDS.SEER_SKILL_FORM_DESCRIPTION })
             .dropdown(
                 {
                     translate:
-                        WEREWOLF_STANDARDROLES_TRANSLATE_IDS.SEER_SKILL_FORM_TARGET_DROPDOWN_LABEL,
+                        WEREWOLF_VANILLAPACK_TRANSLATE_IDS.SEER_SKILL_FORM_TARGET_DROPDOWN_LABEL,
                 },
                 targetPlayersData.map((p) => p.player.name),
                 { defaultValueIndex: 0 },
@@ -67,7 +66,7 @@ export const seerSkillHandlers: GameEventHandlerMap = {
             location: player.location,
         });
         player.sendMessage({
-            translate: WEREWOLF_STANDARDROLES_TRANSLATE_IDS.SEER_SKILL_DIVINATION_RESULT,
+            translate: WEREWOLF_VANILLAPACK_TRANSLATE_IDS.SEER_SKILL_DIVINATION_RESULT,
             with: {
                 rawtext: [
                     { text: targetPlayerData.player.name },

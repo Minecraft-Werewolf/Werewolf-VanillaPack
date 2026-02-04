@@ -23,6 +23,11 @@ export interface RoleDefinition {
     readonly name: RawMessage;
     readonly description: RawMessage;
     readonly factionId: string;
+    readonly roleGroup?: {
+        id: string;
+        name: RawMessage;
+        color: string;
+    };
     readonly isExcludedFromSurvivalCheck?: boolean; // 主に狂人枠で使用
     readonly count?: {
         max?: number;
@@ -31,7 +36,11 @@ export interface RoleDefinition {
     readonly color?: string; // 指定しなければ、factionに基づいて自動で決定される
     readonly divinationResult?: string; // 占い結果 roleId (別アドオンでも可)
     readonly clairvoyanceResult?: string; // 霊視結果 roleId (別アドオンでも可)
-    readonly knownRoles?: string[]; // 初期に知っている役職
+    readonly revealTo?: {
+        readonly roles?: readonly string[];
+        readonly factions?: readonly string[];
+        readonly roleGroups?: readonly string[];
+    };
     readonly skills?: SkillDefinition[]; // 役職に紐づくスキル定義
     readonly handleGameEvents?: RoleSkillEvents; // スキルのトリガーとなるイベント
     readonly appearance?: {
