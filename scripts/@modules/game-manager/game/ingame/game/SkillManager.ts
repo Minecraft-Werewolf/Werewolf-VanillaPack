@@ -1,4 +1,4 @@
-import { KairoUtils, type KairoResponse } from "../../../../../@core/kairo/utils/KairoUtils";
+import { KairoUtils, type KairoResponse } from "@kairo-ts/router";
 import type { SelfPlayerData } from "../../../../../werewolf/player";
 import { roleSkillHandlers } from "../../../../../werewolf/skills/skillHandlers";
 import type { GameEventType, RoleDefinition } from "../../../constants/types";

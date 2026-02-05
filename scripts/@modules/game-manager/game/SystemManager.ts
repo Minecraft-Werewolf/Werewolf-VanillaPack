@@ -1,8 +1,4 @@
-import {
-    KairoUtils,
-    type KairoCommand,
-    type KairoResponse,
-} from "../../../@core/kairo/utils/KairoUtils";
+import { KairoUtils, type KairoCommand, type KairoResponse } from "@kairo-ts/router";
 import type { GameEventType } from "../constants/types";
 import type { IngameConstantsDTO } from "./ingame/game/IngameConstants";
 import type { GamePhase } from "./ingame/GamePhase";

@@ -1,4 +1,4 @@
-import { KairoUtils } from "../../../../../@core/kairo/utils/KairoUtils";
+import { KairoUtils } from "@kairo-ts/router";
 import { SCRIPT_EVENT_COMMAND_IDS } from "../../../constants/scriptevent";
 import { KAIRO_COMMAND_TARGET_ADDON_IDS } from "../../../constants/systems";
 import type { DefinitionManager, DefinitionType } from "./DefinitionManager";

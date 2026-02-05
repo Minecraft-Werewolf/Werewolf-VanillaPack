@@ -1,11 +1,19 @@
 import "./werewolf/events/EntityHurt";
 
-import { Kairo } from "./@core/kairo";
+import {
+    ConsoleManager,
+    Kairo,
+    KairoUtils,
+    type KairoCommand,
+    type KairoResponse,
+} from "@kairo-ts/router";
 import { SystemManager } from "./@modules/game-manager/game/SystemManager";
-import type { KairoCommand, KairoResponse } from "./@core/kairo/utils/KairoUtils";
+import { properties } from "./properties";
 
 async function main(): Promise<void> {
-    Kairo.init(); // client
+    Kairo.init(properties); // client
+    KairoUtils.init(properties);
+    ConsoleManager.init(properties);
 }
 
 Kairo.onActivate = () => {

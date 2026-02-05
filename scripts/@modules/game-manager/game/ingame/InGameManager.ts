@@ -7,12 +7,12 @@ import { SkillManager } from "./game/SkillManager";
 import { playerData, type SelfPlayerData } from "../../../../werewolf/player";
 import { world } from "@minecraft/server";
 import { GameManager } from "./game/GameManager";
-import { KairoUtils, type KairoResponse } from "../../../../@core/kairo/utils/KairoUtils";
 import { onSecondUpdate, onTickUpdate } from "../../../../werewolf/update";
 import { GamePhase } from "./GamePhase";
 import type { GameEventType, RoleDefinition } from "../../constants/types";
 import { roles } from "../../../../werewolf/roles";
 import { IngameConstants, type IngameConstantsDTO } from "./game/IngameConstants";
+import { KairoUtils, type KairoResponse } from "@kairo-ts/router";
 
 export interface PlayerDataDTO {
     playerId: string;
