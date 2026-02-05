@@ -11,7 +11,7 @@ import { KairoUtils, type KairoResponse } from "../../../../@core/kairo/utils/Ka
 import { onSecondUpdate, onTickUpdate } from "../../../../werewolf/update";
 import { GamePhase } from "./GamePhase";
 import type { FactionDefinition, GameEventType, RoleDefinition } from "../../constants/types";
-import { roles } from "../../../../werewolf/roles/roles";
+import { roles } from "../../../../werewolf/roles";
 
 export interface PlayerDataDTO {
     playerId: string;

@@ -18,8 +18,14 @@ interface RoleKey {
 
 type RoleRef = RoleKey;
 
-export interface RoleDefinition {
+export interface BaseDefinition {
     readonly id: string;
+}
+
+export interface SettingDefinition extends BaseDefinition {}
+export interface RoleGroupDefinition extends BaseDefinition {}
+
+export interface RoleDefinition extends BaseDefinition {
     readonly name: RawMessage;
     readonly description: RawMessage;
     readonly factionId: string;
@@ -63,15 +69,14 @@ export interface SkillEventBinding {
 }
 export type RoleSkillEvents = Partial<Record<GameEventType, SkillEventBinding>>;
 
-export interface FactionDefinition {
-    id: string;
-    defaultRoleId: string;
-    type: FactionCategory;
-    name: RawMessage;
-    description: RawMessage;
-    defaultColor: string;
-    victoryCondition: VictoryCondition;
-    sortIndex: number;
+export interface FactionDefinition extends BaseDefinition {
+    readonly defaultRoleId: string;
+    readonly type: FactionCategory;
+    readonly name: RawMessage;
+    readonly description: RawMessage;
+    readonly defaultColor: string;
+    readonly victoryCondition: VictoryCondition;
+    readonly sortIndex: number;
 }
 
 export type FactionCategory = "standard" | "independent" | "neutral";

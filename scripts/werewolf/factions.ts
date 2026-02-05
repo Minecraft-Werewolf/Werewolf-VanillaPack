@@ -1,5 +1,5 @@
-import type { FactionDefinition } from "../../@modules/game-manager/constants/types";
-import { WEREWOLF_VANILLAPACK_TRANSLATE_IDS } from "../constants/translate";
+import type { FactionDefinition } from "../@modules/game-manager/constants/types";
+import { WEREWOLF_VANILLAPACK_TRANSLATE_IDS } from "./constants/translate";
 
 export const factions: FactionDefinition[] = [
     {

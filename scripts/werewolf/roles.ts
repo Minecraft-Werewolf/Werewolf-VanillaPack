@@ -1,5 +1,7 @@
-import type { RoleDefinition } from "../../@modules/game-manager/constants/types";
-import { WEREWOLF_VANILLAPACK_TRANSLATE_IDS } from "../constants/translate";
+import type { RoleDefinition, RoleGroupDefinition } from "../@modules/game-manager/constants/types";
+import { WEREWOLF_VANILLAPACK_TRANSLATE_IDS } from "./constants/translate";
+
+export const roleGroups: RoleGroupDefinition[] = [];
 
 export const roles: RoleDefinition[] = [
     {

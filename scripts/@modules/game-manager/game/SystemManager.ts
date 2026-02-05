@@ -7,9 +7,8 @@ import type { GameEventType } from "../constants/types";
 import type { GamePhase } from "./ingame/GamePhase";
 import { InGameManager, type IngameConstants } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
+import { DefinitionManager } from "./system/definitions/DefinitionManager";
 import { SystemEventManager } from "./system/events/SystemEventManager";
-import { FactionManager } from "./system/factions/FactionManager";
-import { RoleManager } from "./system/roles/RoleManager";
 import { ScriptEventReceiver } from "./system/ScriptEventReceiver";
 import { WorldStateChanger } from "./system/WorldStateChanger";
 
@@ -19,26 +18,18 @@ export enum GameWorldState {
 }
 
 export class SystemManager {
-    private readonly scriptEventReceiver: ScriptEventReceiver;
-    private readonly systemEventManager: SystemEventManager;
-    private readonly worldStateChanger: WorldStateChanger;
-    private readonly factionManager: FactionManager;
-    private readonly roleManager: RoleManager;
+    private readonly scriptEventReceiver = ScriptEventReceiver.create(this);
+    private readonly systemEventManager = SystemEventManager.create(this);
+    private readonly worldStateChanger = WorldStateChanger.create(this);
+    private readonly definitionManager = DefinitionManager.create(this);
     private inGameManager: InGameManager | null = null;
     private outGameManager: OutGameManager | null = null;
     private currentWorldState: GameWorldState | null = null;
 
-    private constructor() {
-        this.scriptEventReceiver = ScriptEventReceiver.create(this);
-        this.systemEventManager = SystemEventManager.create(this);
-        this.worldStateChanger = WorldStateChanger.create(this);
-        this.factionManager = FactionManager.create(this);
-        this.roleManager = RoleManager.create(this);
-    }
+    private constructor() {}
 
     public init(): void {
-        this.requestFactionRegistration();
-        this.requestRoleRegistration();
+        this.definitionManager.requestDefinitionsRegistration();
 
         // WorldState について GameManager に尋ねることと、
         // requestがちゃんと通ったかを GameManager から返してもらいたい。
@@ -94,14 +85,6 @@ export class SystemManager {
     }
     public createOutGameManager(): OutGameManager {
         return OutGameManager.create(this);
-    }
-
-    public requestFactionRegistration(): void {
-        this.factionManager.requestFactionRegistration();
-    }
-
-    public requestRoleRegistration(): void {
-        this.roleManager.requestRoleRegistration();
     }
 
     public setCurrentPhase(newPhase: GamePhase): void {

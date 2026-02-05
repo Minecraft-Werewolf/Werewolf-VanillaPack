@@ -17,12 +17,6 @@ export class ScriptEventReceiver {
                     command.data.ingameConstants as IngameConstants,
                 );
                 return;
-            case SCRIPT_EVENT_COMMAND_IDS.FACTION_RE_REGISTRATION_REQUEST:
-                this.systemManager.requestFactionRegistration();
-                return;
-            case SCRIPT_EVENT_COMMAND_IDS.ROLE_RE_REGISTRATION_REQUEST:
-                this.systemManager.requestRoleRegistration();
-                return;
             case SCRIPT_EVENT_COMMAND_IDS.INGAME_PHASE_CHANGE:
                 this.systemManager.setCurrentPhase(command.data.newPhase);
                 return;

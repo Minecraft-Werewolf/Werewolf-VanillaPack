@@ -1,17 +1,17 @@
 import { world } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import { findFactionDefinition, findRoleDefinition, getRoleDefaultColor } from "./utils";
-import type { GameEventHandlerMap } from "../../../@modules/game-manager/game/ingame/game/SkillManager";
-import { SYSTEMS } from "../../constants/systems";
-import { WEREWOLF_VANILLAPACK_TRANSLATE_IDS } from "../../constants/translate";
+import type { GameEventHandlerMap } from "../../@modules/game-manager/game/ingame/game/SkillManager";
+import { SYSTEMS } from "../constants/systems";
+import { WEREWOLF_VANILLAPACK_TRANSLATE_IDS } from "../constants/translate";
 
-export const seerSkillHandlers: GameEventHandlerMap = {
-    "seer-divination": async (ev) => {
+export const mediumSkillHandlers: GameEventHandlerMap = {
+    "medium-clairvoyance": async (ev) => {
         const { playerData: pd, werewolfGameData: we, ingameConstants: c } = ev;
         const player = world.getPlayers().find((p) => p.id === pd.playerId);
         if (!player) return false;
         const targetPlayersData = we.playersData.filter(
-            (p) => p.isAlive && p.player.id !== pd.playerId,
+            (p) => !p.isAlive && p.player.id !== pd.playerId,
         );
         if (targetPlayersData.length === 0) {
             player.playSound(SYSTEMS.ERROR.SOUND_ID, {
@@ -20,20 +20,23 @@ export const seerSkillHandlers: GameEventHandlerMap = {
                 location: player.location,
             });
             player.sendMessage({
-                translate: WEREWOLF_VANILLAPACK_TRANSLATE_IDS.SEER_SKILL_NO_AVAILABLE_TARGETS_ERROR,
+                translate:
+                    WEREWOLF_VANILLAPACK_TRANSLATE_IDS.MEDIUM_SKILL_NO_AVAILABLE_TARGETS_ERROR,
             });
             return false;
         }
 
         const form = new ModalFormData()
             .title({
-                translate: WEREWOLF_VANILLAPACK_TRANSLATE_IDS.SEER_SKILL_FORM_TITLE,
+                translate: WEREWOLF_VANILLAPACK_TRANSLATE_IDS.MEDIUM_SKILL_FORM_TITLE,
             })
-            .label({ translate: WEREWOLF_VANILLAPACK_TRANSLATE_IDS.SEER_SKILL_FORM_DESCRIPTION })
+            .label({
+                translate: WEREWOLF_VANILLAPACK_TRANSLATE_IDS.MEDIUM_SKILL_FORM_DESCRIPTION,
+            })
             .dropdown(
                 {
                     translate:
-                        WEREWOLF_VANILLAPACK_TRANSLATE_IDS.SEER_SKILL_FORM_TARGET_DROPDOWN_LABEL,
+                        WEREWOLF_VANILLAPACK_TRANSLATE_IDS.MEDIUM_SKILL_FORM_TARGET_DROPDOWN_LABEL,
                 },
                 targetPlayersData.map((p) => p.player.name),
                 { defaultValueIndex: 0 },
@@ -51,14 +54,14 @@ export const seerSkillHandlers: GameEventHandlerMap = {
         );
         if (!targetPlayerFaction) return false;
 
-        const divinationResultRoleId =
-            targetPlayerData.role.divinationResult ?? targetPlayerFaction.defaultRoleId;
+        const clairvoyanceResultRoleId =
+            targetPlayerData.role.clairvoyanceResult ?? targetPlayerFaction.defaultRoleId;
 
-        const divinationResultRoleDefinition = findRoleDefinition(
+        const clairvoyanceResultRoleDefinition = findRoleDefinition(
             c.roleDefinitions,
-            divinationResultRoleId,
+            clairvoyanceResultRoleId,
         );
-        if (!divinationResultRoleDefinition) return false;
+        if (!clairvoyanceResultRoleDefinition) return false;
 
         player.playSound(SYSTEMS.SUCCESS.SOUND_ID, {
             pitch: SYSTEMS.SUCCESS.SOUND_PITCH,
@@ -66,16 +69,16 @@ export const seerSkillHandlers: GameEventHandlerMap = {
             location: player.location,
         });
         player.sendMessage({
-            translate: WEREWOLF_VANILLAPACK_TRANSLATE_IDS.SEER_SKILL_DIVINATION_RESULT,
+            translate: WEREWOLF_VANILLAPACK_TRANSLATE_IDS.MEDIUM_SKILL_CLAIRVOYANCE_RESULT,
             with: {
                 rawtext: [
                     { text: targetPlayerData.player.name },
                     {
                         text:
-                            divinationResultRoleDefinition.color ??
-                            getRoleDefaultColor(c, divinationResultRoleDefinition),
+                            clairvoyanceResultRoleDefinition.color ??
+                            getRoleDefaultColor(c, clairvoyanceResultRoleDefinition),
                     },
-                    divinationResultRoleDefinition.name,
+                    clairvoyanceResultRoleDefinition.name,
                 ],
             },
         });

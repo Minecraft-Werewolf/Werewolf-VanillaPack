@@ -1,8 +1,8 @@
 import type {
     FactionDefinition,
     RoleDefinition,
-} from "../../../@modules/game-manager/constants/types";
-import type { IngameConstants } from "../../../@modules/game-manager/game/ingame/InGameManager";
+} from "../../@modules/game-manager/constants/types";
+import type { IngameConstants } from "../../@modules/game-manager/game/ingame/InGameManager";
 
 export function findRoleDefinition(
     RolesByAddon: Record<string, RoleDefinition[]>,
