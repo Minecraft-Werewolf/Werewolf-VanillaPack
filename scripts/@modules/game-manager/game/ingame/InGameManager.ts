@@ -10,8 +10,9 @@ import { GameManager } from "./game/GameManager";
 import { KairoUtils, type KairoResponse } from "../../../../@core/kairo/utils/KairoUtils";
 import { onSecondUpdate, onTickUpdate } from "../../../../werewolf/update";
 import { GamePhase } from "./GamePhase";
-import type { FactionDefinition, GameEventType, RoleDefinition } from "../../constants/types";
+import type { GameEventType, RoleDefinition } from "../../constants/types";
 import { roles } from "../../../../werewolf/roles";
+import { IngameConstants, type IngameConstantsDTO } from "./game/IngameConstants";
 
 export interface PlayerDataDTO {
     playerId: string;
@@ -21,15 +22,11 @@ export interface PlayerDataDTO {
     role: RoleDefinition | null;
 }
 
-export type IngameConstants = {
-    roleDefinitions: Record<string, RoleDefinition[]>;
-    factionDefinitions: Record<string, FactionDefinition[]>;
-};
-
 export class InGameManager {
     private currentPhase: GamePhase = GamePhase.Waiting;
 
     private readonly inGameEventManager: InGameEventManager;
+    private readonly ingameConstants: IngameConstants;
     private readonly gameManager: GameManager;
     private readonly skillManager: SkillManager;
 
@@ -37,9 +34,10 @@ export class InGameManager {
 
     private constructor(
         private readonly systemManager: SystemManager,
-        private readonly ingameConstants: IngameConstants,
+        ingameConstantsDTO: IngameConstantsDTO,
     ) {
         this.inGameEventManager = InGameEventManager.create(this);
+        this.ingameConstants = IngameConstants.create(this, ingameConstantsDTO);
         this.gameManager = GameManager.create(this, {
             onTickUpdate: onTickUpdate,
             onSecondUpdate: onSecondUpdate,
@@ -50,7 +48,7 @@ export class InGameManager {
 
     public static create(
         systemManager: SystemManager,
-        ingameConstants: IngameConstants,
+        ingameConstants: IngameConstantsDTO,
     ): InGameManager {
         return new InGameManager(systemManager, ingameConstants);
     }

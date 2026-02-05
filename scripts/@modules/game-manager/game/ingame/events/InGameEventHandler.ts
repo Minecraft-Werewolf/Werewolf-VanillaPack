@@ -3,7 +3,7 @@ import type { InGameEventManager } from "./InGameEventManager";
 import { GamePhase } from "../GamePhase";
 import type { SelfPlayerData } from "../../../../../werewolf/player";
 import type { WerewolfGameData } from "../game/WerewolfGameData";
-import type { IngameConstants } from "../InGameManager";
+import type { IngameConstants } from "../game/IngameConstants";
 
 export type InGameEventContext = {
     readonly playersData: readonly SelfPlayerData[];

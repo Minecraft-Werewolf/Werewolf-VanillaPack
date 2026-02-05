@@ -1,6 +1,6 @@
 import type { KairoCommand, KairoResponse } from "../../../../@core/kairo/utils/KairoUtils";
 import { SCRIPT_EVENT_COMMAND_IDS, SCRIPT_EVENT_MESSAGES } from "../../constants/scriptevent";
-import type { IngameConstants } from "../ingame/InGameManager";
+import type { IngameConstantsDTO } from "../ingame/game/IngameConstants";
 import { GameWorldState, type SystemManager } from "../SystemManager";
 
 export class ScriptEventReceiver {
@@ -14,7 +14,7 @@ export class ScriptEventReceiver {
             case SCRIPT_EVENT_COMMAND_IDS.WORLD_STATE_CHANGE:
                 this.handleWorldStateChange(
                     command.data.newState,
-                    command.data.ingameConstants as IngameConstants,
+                    command.data.ingameConstants as IngameConstantsDTO,
                 );
                 return;
             case SCRIPT_EVENT_COMMAND_IDS.INGAME_PHASE_CHANGE:
@@ -30,7 +30,7 @@ export class ScriptEventReceiver {
         }
     }
 
-    private handleWorldStateChange(newState: string, ingameConstants?: IngameConstants): void {
+    private handleWorldStateChange(newState: string, ingameConstants?: IngameConstantsDTO): void {
         switch (newState) {
             case SCRIPT_EVENT_MESSAGES.IN_GAME:
                 this.systemManager.changeWorldState(GameWorldState.InGame, ingameConstants);

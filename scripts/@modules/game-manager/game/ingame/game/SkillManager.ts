@@ -2,7 +2,8 @@ import { KairoUtils, type KairoResponse } from "../../../../../@core/kairo/utils
 import type { SelfPlayerData } from "../../../../../werewolf/player";
 import { roleSkillHandlers } from "../../../../../werewolf/skills/skillHandlers";
 import type { GameEventType, RoleDefinition } from "../../../constants/types";
-import type { IngameConstants, InGameManager } from "../InGameManager";
+import type { InGameManager } from "../InGameManager";
+import type { IngameConstants } from "./IngameConstants";
 import type { WerewolfGameData } from "./WerewolfGameData";
 
 export type RoleSkillHandler = (ev: SkillEventContext) => Promise<boolean> | boolean;

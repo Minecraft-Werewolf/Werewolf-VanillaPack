@@ -4,8 +4,9 @@ import {
     type KairoResponse,
 } from "../../../@core/kairo/utils/KairoUtils";
 import type { GameEventType } from "../constants/types";
+import type { IngameConstantsDTO } from "./ingame/game/IngameConstants";
 import type { GamePhase } from "./ingame/GamePhase";
-import { InGameManager, type IngameConstants } from "./ingame/InGameManager";
+import { InGameManager } from "./ingame/InGameManager";
 import { OutGameManager } from "./outgame/OutGameManager";
 import { DefinitionManager } from "./system/definitions/DefinitionManager";
 import { SystemEventManager } from "./system/events/SystemEventManager";
@@ -55,7 +56,7 @@ export class SystemManager {
     public unsubscribeEvents(): void {
         this.systemEventManager.unsubscribeAll();
     }
-    public changeWorldState(nextState: GameWorldState, ingameConstants?: IngameConstants): void {
+    public changeWorldState(nextState: GameWorldState, ingameConstants?: IngameConstantsDTO): void {
         this.worldStateChanger.change(nextState, ingameConstants);
     }
 
@@ -80,7 +81,7 @@ export class SystemManager {
         this.outGameManager = v;
     }
 
-    public createInGameManager(ingameConstants: IngameConstants): InGameManager {
+    public createInGameManager(ingameConstants: IngameConstantsDTO): InGameManager {
         return InGameManager.create(this, ingameConstants);
     }
     public createOutGameManager(): OutGameManager {

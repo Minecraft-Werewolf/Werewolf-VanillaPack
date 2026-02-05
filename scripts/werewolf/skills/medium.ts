@@ -1,6 +1,6 @@
 import { world } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
-import { findFactionDefinition, findRoleDefinition, getRoleDefaultColor } from "./utils";
+import { getRoleDefaultColor } from "./utils";
 import type { GameEventHandlerMap } from "../../@modules/game-manager/game/ingame/game/SkillManager";
 import { SYSTEMS } from "../constants/systems";
 import { WEREWOLF_VANILLAPACK_TRANSLATE_IDS } from "../constants/translate";
@@ -48,19 +48,13 @@ export const mediumSkillHandlers: GameEventHandlerMap = {
         const targetPlayerData = targetPlayersData[res.formValues[1] as number];
         if (!targetPlayerData || !targetPlayerData.role) return false;
 
-        const targetPlayerFaction = findFactionDefinition(
-            c.factionDefinitions,
-            targetPlayerData.role.factionId,
-        );
+        const targetPlayerFaction = c.getFactionById(targetPlayerData.role.factionId);
         if (!targetPlayerFaction) return false;
 
         const clairvoyanceResultRoleId =
             targetPlayerData.role.clairvoyanceResult ?? targetPlayerFaction.defaultRoleId;
 
-        const clairvoyanceResultRoleDefinition = findRoleDefinition(
-            c.roleDefinitions,
-            clairvoyanceResultRoleId,
-        );
+        const clairvoyanceResultRoleDefinition = c.getRoleById(clairvoyanceResultRoleId);
         if (!clairvoyanceResultRoleDefinition) return false;
 
         player.playSound(SYSTEMS.SUCCESS.SOUND_ID, {
