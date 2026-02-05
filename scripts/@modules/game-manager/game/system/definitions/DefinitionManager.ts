@@ -1,7 +1,10 @@
-import { factions } from "../../../../../werewolf/factions";
-import { roleGroups, roles } from "../../../../../werewolf/roles";
-import { settings } from "../../../../../werewolf/settings";
 import type { SystemManager } from "../../SystemManager";
+import {
+    getRegisteredFactions,
+    getRegisteredRoleGroups,
+    getRegisteredRoles,
+    getRegisteredSettings,
+} from "../../registry";
 import { FactionRegistrationRequester } from "./factions/FactionRegistrationRequester";
 import { RoleGroupRegistrationRequester } from "./rolegroup/RoleGroupRegistrationRequester";
 import { RoleRegistrationRequester } from "./roles/RoleRegistrationRequester";
@@ -20,9 +23,9 @@ export class DefinitionManager {
     }
 
     public requestDefinitionsRegistration(): void {
-        this.roleRegistrationRequester.request(roles);
-        this.factionRegistrationRequester.request(factions);
-        this.roleGroupRegistrationRequester.request(roleGroups);
-        this.settingRegistrationRequester.request(settings);
+        this.roleRegistrationRequester.request(getRegisteredRoles());
+        this.factionRegistrationRequester.request(getRegisteredFactions());
+        this.roleGroupRegistrationRequester.request(getRegisteredRoleGroups());
+        this.settingRegistrationRequester.request(getRegisteredSettings());
     }
 }

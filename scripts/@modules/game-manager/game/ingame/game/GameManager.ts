@@ -1,6 +1,6 @@
 import { system } from "@minecraft/server";
 import type { InGameManager } from "../InGameManager";
-import type { SelfPlayerData } from "../../../../../werewolf/player";
+import type { SelfPlayerData } from "../PlayerData";
 import type { IngameConstants } from "./IngameConstants";
 
 export type GameEventContext = {
