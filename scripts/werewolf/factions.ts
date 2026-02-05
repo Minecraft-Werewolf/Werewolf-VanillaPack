@@ -1,5 +1,6 @@
 import type { FactionDefinition } from "../@modules/game-manager/constants/types";
 import { WEREWOLF_VANILLAPACK_TRANSLATE_IDS } from "./constants/translate";
+import { registerFactions } from "./register";
 
 export const factions: FactionDefinition[] = [
     {
@@ -63,3 +64,5 @@ export const factions: FactionDefinition[] = [
         sortIndex: 200,
     },
 ];
+
+registerFactions(factions);

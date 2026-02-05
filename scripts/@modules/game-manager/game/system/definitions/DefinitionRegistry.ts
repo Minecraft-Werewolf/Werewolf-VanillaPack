@@ -5,6 +5,7 @@ import type {
     SettingDefinition,
 } from "../../../constants/types";
 import type { GameEventContext } from "../../ingame/game/GameManager";
+import type { GameEventHandlerMap } from "../../ingame/game/SkillManager";
 import type { SelfPlayerData } from "../../ingame/PlayerData";
 import type { SystemManager } from "../../SystemManager";
 
@@ -15,6 +16,8 @@ export type UpdateHandlers = {
     readonly onSecondUpdate?: GameEventHandler;
 };
 
+export type RoleSkillHandlers = Record<string, GameEventHandlerMap>;
+
 type DefinitionRegistryState = {
     roles?: RoleDefinition[];
     factions?: FactionDefinition[];
@@ -22,6 +25,7 @@ type DefinitionRegistryState = {
     settings?: SettingDefinition[];
     playerData?: SelfPlayerData;
     updateHandlers?: UpdateHandlers;
+    roleSkillHandlers?: RoleSkillHandlers;
 };
 
 type DefinitionRegistration = Partial<
@@ -32,6 +36,7 @@ type RegistryInitPayload = {
     definitions?: DefinitionRegistration;
     playerData?: SelfPlayerData;
     updateHandlers?: UpdateHandlers;
+    roleSkillHandlers?: RoleSkillHandlers;
 };
 
 export class DefinitionRegistry {
@@ -53,6 +58,9 @@ export class DefinitionRegistry {
         }
         if (payload.updateHandlers) {
             this.registerUpdateHandlers(payload.updateHandlers);
+        }
+        if (payload.roleSkillHandlers) {
+            this.registerRoleSkillHandlers(payload.roleSkillHandlers);
         }
     }
 
@@ -79,6 +87,13 @@ export class DefinitionRegistry {
         this.state.updateHandlers = handlers;
     }
 
+    public registerRoleSkillHandlers(handlers: RoleSkillHandlers): void {
+        this.state.roleSkillHandlers = {
+            ...(this.state.roleSkillHandlers ?? {}),
+            ...handlers,
+        };
+    }
+
     public getRoles(): readonly RoleDefinition[] | undefined {
         return this.state.roles;
     }
@@ -101,5 +116,9 @@ export class DefinitionRegistry {
 
     public getUpdateHandlers(): UpdateHandlers | undefined {
         return this.state.updateHandlers;
+    }
+
+    public getRoleSkillHandlers(): RoleSkillHandlers | undefined {
+        return this.state.roleSkillHandlers;
     }
 }

@@ -1,10 +1,10 @@
 import { KairoUtils, type KairoResponse } from "@kairo-ts/router";
 import type { SelfPlayerData } from "../PlayerData";
-import { roleSkillHandlers } from "../../../../../werewolf/skills/skillHandlers";
 import type { GameEventType, RoleDefinition } from "../../../constants/types";
 import type { InGameManager } from "../InGameManager";
 import type { IngameConstants } from "./IngameConstants";
 import type { WerewolfGameData } from "./WerewolfGameData";
+import { getRegisteredRoleSkillHandlers } from "../../../registry";
 
 export type RoleSkillHandler = (ev: SkillEventContext) => Promise<boolean> | boolean;
 
@@ -24,6 +24,7 @@ export class SkillManager {
         private readonly inGameManager: InGameManager,
         roles: readonly RoleDefinition[],
     ) {
+        const roleSkillHandlers = getRegisteredRoleSkillHandlers();
         for (const role of roles) {
             const skillHandlers = roleSkillHandlers[role.id];
             if (!skillHandlers) continue;

@@ -17,13 +17,13 @@ async function main(): Promise<void> {
     ConsoleManager.init(properties);
 }
 
-Kairo.onActivate = () => {
+Kairo.onActivate = async () => {
     /**
      * ここにアドオン有効化時の初期化処理を書く
      * Write the initialization logic executed when the addon becomes active
     */
 
-    registerWerewolfModules();
+    await registerWerewolfModules();
     SystemManager.getInstance().subscribeEvents();
     SystemManager.getInstance().init();
 };

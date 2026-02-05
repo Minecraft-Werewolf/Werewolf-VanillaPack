@@ -1,5 +1,6 @@
 import type { RoleDefinition, RoleGroupDefinition } from "../@modules/game-manager/constants/types";
 import { WEREWOLF_VANILLAPACK_TRANSLATE_IDS } from "./constants/translate";
+import { registerRoleGroups, registerRoles } from "./register";
 
 export const roleGroups: RoleGroupDefinition[] = [];
 
@@ -116,3 +117,6 @@ export const roles: RoleDefinition[] = [
         sortIndex: 6,
     },
 ];
+
+registerRoleGroups(roleGroups);
+registerRoles(roles);

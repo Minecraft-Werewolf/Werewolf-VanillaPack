@@ -1,4 +1,5 @@
 import type { SelfPlayerData } from "../@modules/game-manager/game/ingame/PlayerData";
+import { registerPlayerData } from "./register";
 
 export type { SelfPlayerData };
 
@@ -8,3 +9,5 @@ export const playerData: SelfPlayerData = {
     playerId: "", // playerId は各プレイヤーのIdが自動で割り振られます。(このままにしておいてください)
     isProtected: false, // 騎士の守護
 };
+
+registerPlayerData(playerData);
