@@ -1,5 +1,4 @@
-import type { SelfPlayerData } from "@mc-werewolf/game-engine";
-import { registerRuntimePlayerDefaults } from "../internal/runtimeRegistry";
+import { DefinitionRegistry, type SelfPlayerData } from "@mc-werewolf/game-engine";
 
 export type { SelfPlayerData };
 
@@ -10,4 +9,4 @@ export const playerData: SelfPlayerData = {
     isProtected: false, // 騎士の守護
 };
 
-registerRuntimePlayerDefaults(playerData);
+DefinitionRegistry.player.register(playerData);
