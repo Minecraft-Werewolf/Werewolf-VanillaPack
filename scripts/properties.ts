@@ -25,7 +25,7 @@ export const properties: KairoAddonProperties = {
         authors: ["shizuku86"],
     },
     header: {
-        name: "Werewolf-VanillaPack",
+        name: "Werewolf VanillaPack",
         description:
             "provides and handles the fundamental mechanics and standard gameplay of the Werewolf game.",
         version: {
