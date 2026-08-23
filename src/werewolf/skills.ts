@@ -15,7 +15,7 @@ werewolf.defineSkills([
         handler: {
             apiName: "vanilla:resolveDivination",
         },
-        uses: 1,
+        cooldownTicks: 20 * 120,
         priority: 0,
         tags: ["divination"],
     },
